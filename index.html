@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat Room</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -30,18 +26,8 @@
       gap: 16px;
       width: 320px;
     }
-
-    #login-screen h1 {
-      font-size: 2rem;
-      color: #e94560;
-      letter-spacing: 1px;
-    }
-
-    #login-screen p {
-      color: #aaa;
-      font-size: 0.9rem;
-      text-align: center;
-    }
+    #login-screen h1 { font-size: 2rem; color: #e94560; letter-spacing: 1px; }
+    #login-screen p  { color: #aaa; font-size: 0.9rem; text-align: center; }
 
     /* ── Chat screen ── */
     #chat-screen {
@@ -50,6 +36,7 @@
       width: min(480px, 100vw);
       height: 100dvh;
       background: #16213e;
+      position: relative;
     }
 
     header {
@@ -61,17 +48,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.4);
       flex-shrink: 0;
     }
-
-    header h2 {
-      font-size: 1.1rem;
-      color: #e94560;
-    }
-
-    #online-count {
-      font-size: 0.8rem;
-      color: #aaa;
-    }
-
+    header h2    { font-size: 1.1rem; color: #e94560; }
+    #online-count { font-size: 0.8rem; color: #aaa; }
     #leave-btn {
       background: none;
       border: 1px solid #e94560;
@@ -81,11 +59,7 @@
       cursor: pointer;
       font-size: 0.8rem;
     }
-
-    #leave-btn:hover {
-      background: #e94560;
-      color: #fff;
-    }
+    #leave-btn:hover { background: #e94560; color: #fff; }
 
     /* ── Messages ── */
     #messages {
@@ -97,7 +71,6 @@
       gap: 10px;
       scroll-behavior: smooth;
     }
-
     #messages::-webkit-scrollbar { width: 4px; }
     #messages::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 4px; }
 
@@ -110,39 +83,15 @@
       word-break: break-word;
       animation: fadeIn 0.2s ease;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    .msg.other {
-      background: #0f3460;
-      border-bottom-left-radius: 4px;
-      align-self: flex-start;
-    }
-
-    .msg.mine {
-      background: #e94560;
-      border-bottom-right-radius: 4px;
-      align-self: flex-end;
-    }
-
-    .msg .sender {
-      font-size: 0.72rem;
-      font-weight: 600;
-      opacity: 0.75;
-      margin-bottom: 3px;
-    }
-
+    .msg.other { background: #0f3460; border-bottom-left-radius: 4px; align-self: flex-start; }
+    .msg.mine  { background: #e94560; border-bottom-right-radius: 4px; align-self: flex-end; }
+    .msg .sender { font-size: 0.72rem; font-weight: 600; opacity: 0.75; margin-bottom: 3px; }
     .msg.mine .sender { display: none; }
-
-    .msg .time {
-      font-size: 0.65rem;
-      opacity: 0.55;
-      margin-top: 4px;
-      text-align: right;
-    }
+    .msg .time { font-size: 0.65rem; opacity: 0.55; margin-top: 4px; text-align: right; }
 
     .system-msg {
       align-self: center;
@@ -151,6 +100,9 @@
       background: rgba(255,255,255,0.05);
       padding: 4px 12px;
       border-radius: 20px;
+      text-align: center;
+      max-width: 90%;
+      white-space: pre-wrap;
     }
 
     /* ── Emoji picker ── */
@@ -171,7 +123,6 @@
       z-index: 10;
       box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
-
     #emoji-picker span {
       font-size: 1.4rem;
       cursor: pointer;
@@ -180,9 +131,7 @@
       transition: background 0.15s;
       user-select: none;
     }
-
     #emoji-picker span:hover { background: rgba(255,255,255,0.1); }
-
     #emoji-btn {
       background: none;
       border: none;
@@ -193,7 +142,48 @@
       line-height: 1;
     }
 
-    #chat-screen { position: relative; }
+    /* ── Games menu ── */
+    #games-btn {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0 2px;
+      flex-shrink: 0;
+      line-height: 1;
+      font-weight: 300;
+      transition: color 0.2s;
+    }
+    #games-btn:hover { color: #e94560; }
+
+    #games-menu {
+      position: absolute;
+      bottom: 70px;
+      left: 12px;
+      background: #0f3460;
+      border: 1px solid #1a4a7a;
+      border-radius: 12px;
+      padding: 8px;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 160px;
+    }
+    .game-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+    }
+    .game-item:hover { background: rgba(255,255,255,0.1); }
+    .game-item .game-icon { font-size: 1.3rem; }
 
     /* ── Input bar ── */
     #input-bar {
@@ -202,8 +192,8 @@
       padding: 12px;
       background: #0f3460;
       flex-shrink: 0;
+      align-items: center;
     }
-
     #msg-input {
       flex: 1;
       background: #16213e;
@@ -214,9 +204,7 @@
       font-size: 0.95rem;
       outline: none;
     }
-
     #msg-input:focus { border-color: #e94560; }
-
     #send-btn {
       background: #e94560;
       border: none;
@@ -230,14 +218,8 @@
       flex-shrink: 0;
       transition: background 0.2s;
     }
-
     #send-btn:hover { background: #c73652; }
-
-    #send-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: #fff;
-    }
+    #send-btn svg { width: 18px; height: 18px; fill: #fff; }
 
     /* ── Shared input style ── */
     input[type="text"] {
@@ -250,9 +232,7 @@
       font-size: 0.95rem;
       outline: none;
     }
-
     input[type="text"]:focus { border-color: #e94560; }
-
     button.primary {
       width: 100%;
       background: #e94560;
@@ -265,14 +245,8 @@
       font-weight: 600;
       transition: background 0.2s;
     }
-
     button.primary:hover { background: #c73652; }
-
-    #error-msg {
-      color: #e94560;
-      font-size: 0.82rem;
-      min-height: 18px;
-    }
+    #error-msg { color: #e94560; font-size: 0.82rem; min-height: 18px; }
 
     /* ── Config notice ── */
     #config-notice {
@@ -283,6 +257,113 @@
       text-align: center;
       display: none;
     }
+
+    /* ── Modal overlay ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: #16213e;
+      border: 1px solid #1a4a7a;
+      border-radius: 16px;
+      padding: 24px;
+      width: min(360px, 92vw);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+    .modal h3 { text-align: center; color: #e94560; font-size: 1.2rem; }
+
+    /* ── Wordle modal ── */
+    #wordle-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+    .wordle-row {
+      display: flex;
+      gap: 6px;
+    }
+    .wordle-cell {
+      width: 46px;
+      height: 46px;
+      border: 2px solid #1a4a7a;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .wordle-cell.correct  { background: #538d4e; border-color: #538d4e; color: #fff; }
+    .wordle-cell.present  { background: #b59f3b; border-color: #b59f3b; color: #fff; }
+    .wordle-cell.absent   { background: #3a3a3c; border-color: #3a3a3c; color: #fff; }
+    .wordle-cell.filled   { border-color: #888; }
+
+    #wordle-keyboard {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+    }
+    .kb-row { display: flex; gap: 4px; }
+    .kb-key {
+      background: #0f3460;
+      border: none;
+      border-radius: 5px;
+      color: #eee;
+      font-size: 0.78rem;
+      font-weight: 600;
+      height: 38px;
+      min-width: 28px;
+      padding: 0 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-transform: uppercase;
+    }
+    .kb-key.wide { min-width: 48px; font-size: 0.7rem; }
+    .kb-key:hover  { background: #1a4a7a; }
+    .kb-key.correct { background: #538d4e !important; color: #fff; }
+    .kb-key.present { background: #b59f3b !important; color: #fff; }
+    .kb-key.absent  { background: #3a3a3c !important; color: #555; }
+
+    #wordle-status { text-align: center; font-size: 0.85rem; color: #aaa; min-height: 20px; }
+
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-actions button { flex: 1; }
+    .btn-secondary {
+      background: none;
+      border: 1px solid #555;
+      border-radius: 8px;
+      color: #aaa;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: #e94560; color: #e94560; }
+    .btn-danger {
+      background: none;
+      border: 1px solid #e94560;
+      border-radius: 8px;
+      color: #e94560;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn-danger:hover { background: #e94560; color: #fff; }
   </style>
 </head>
 <body>
@@ -305,13 +386,39 @@
       <button id="leave-btn" onclick="leaveRoom()">Leave</button>
     </header>
     <div id="messages"></div>
+
+    <!-- Emoji picker -->
     <div id="emoji-picker" style="display:none"></div>
+
+    <!-- Games menu -->
+    <div id="games-menu">
+      <div class="game-item" onclick="openWordle()">
+        <span class="game-icon">🟩</span>
+        <span>Wordle</span>
+      </div>
+    </div>
+
     <div id="input-bar">
+      <button id="games-btn" onclick="toggleGamesMenu()" title="Games">+</button>
       <button id="emoji-btn" onclick="togglePicker()">😊</button>
       <input id="msg-input" type="text" placeholder="Type a message…" maxlength="500" autocomplete="off" />
       <button id="send-btn" onclick="sendMessage()">
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
       </button>
+    </div>
+  </div>
+
+  <!-- Wordle Modal -->
+  <div id="wordle-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>🟩 Wordle</h3>
+      <div id="wordle-grid"></div>
+      <div id="wordle-status"></div>
+      <div id="wordle-keyboard"></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeWordle()">Close</button>
+        <button class="btn-danger" onclick="shareWordleResult()">Share to chat</button>
+      </div>
     </div>
   </div>
 
@@ -321,7 +428,7 @@
 
   <script>
     // ─────────────────────────────────────────────
-    // 🔧 PASTE YOUR FIREBASE CONFIG HERE
+    // 🔧 FIREBASE CONFIG
     // ─────────────────────────────────────────────
     const firebaseConfig = {
       apiKey: "AIzaSyCvjKNhlzu2LMsJvOuDtjvJZBJFmZAiteM",
@@ -332,7 +439,6 @@
       messagingSenderId: "101490130126",
       appId: "1:101490130126:web:2ce174ed026fc48bbae49f"
     };
-    // ─────────────────────────────────────────────
 
     const CONFIGURED = !firebaseConfig.apiKey.includes("YOUR_");
 
@@ -351,13 +457,11 @@
     function ts() {
       return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     }
-
     function sanitize(str) {
       const d = document.createElement("div");
       d.textContent = str;
       return d.innerHTML;
     }
-
     function scrollBottom() {
       const m = document.getElementById("messages");
       m.scrollTop = m.scrollHeight;
@@ -367,7 +471,6 @@
     function joinRoom() {
       const val = document.getElementById("username-input").value.trim();
       const err = document.getElementById("error-msg");
-
       if (!val) { err.textContent = "Please enter a name."; return; }
       if (val.length < 2) { err.textContent = "Name must be at least 2 characters."; return; }
 
@@ -381,20 +484,16 @@
         return;
       }
 
-      // Presence
       myPresenceRef = presenceRef.child(username.replace(/[.#$[\]]/g, "_") + "_" + Date.now());
       myPresenceRef.set({ name: username, online: true });
       myPresenceRef.onDisconnect().remove();
 
       presenceRef.on("value", snap => {
-        const count = snap.numChildren();
-        document.getElementById("online-count").textContent = count + " online";
+        document.getElementById("online-count").textContent = snap.numChildren() + " online";
       });
 
-      // System join message
       messagesRef.push({ type: "system", text: `${username} joined`, t: Date.now() });
 
-      // Listen for messages (last 100)
       messagesRef.limitToLast(100).on("child_added", snap => {
         const d = snap.val();
         if (d.type === "system") {
@@ -424,7 +523,6 @@
         appendMessage(username, sanitize(text), true, ts());
         return;
       }
-
       messagesRef.push({ sender: username, text: sanitize(text), time: ts(), t: Date.now() });
     }
 
@@ -481,11 +579,23 @@
       const picker = document.getElementById("emoji-picker");
       const show = force !== undefined ? force : picker.style.display === "none";
       picker.style.display = show ? "flex" : "none";
+      if (show) toggleGamesMenu(false);
+    }
+
+    // ── Games menu ────────────────────────────────
+    function toggleGamesMenu(force) {
+      const menu = document.getElementById("games-menu");
+      const show = force !== undefined ? force : menu.style.display !== "flex";
+      menu.style.display = show ? "flex" : "none";
+      if (show) togglePicker(false);
     }
 
     document.addEventListener("click", e => {
       if (!e.target.closest("#emoji-picker") && e.target.id !== "emoji-btn") {
         togglePicker(false);
+      }
+      if (!e.target.closest("#games-menu") && e.target.id !== "games-btn") {
+        toggleGamesMenu(false);
       }
     });
 
@@ -493,13 +603,325 @@
 
     // ── Enter key ─────────────────────────────────
     document.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && !wordleOpen) {
         if (document.getElementById("chat-screen").style.display === "flex") {
           sendMessage();
         } else {
           joinRoom();
         }
       }
+    });
+
+    // ═══════════════════════════════════════════════
+    // WORDLE
+    // ═══════════════════════════════════════════════
+    const WORD_LIST = [
+      "about","above","abuse","actor","acute","admit","adopt","adult","after","again",
+      "agent","agree","ahead","alarm","album","alert","alien","align","alike","alive",
+      "alley","allow","alone","along","altar","alter","angel","anger","angle","angry",
+      "anime","ankle","annex","antic","anvil","apart","apple","apply","apron","aptly",
+      "arena","argue","arise","armor","aroma","arose","array","arrow","asset","atlas",
+      "attic","audio","audit","avoid","awake","award","aware","awful","badly","baker",
+      "bases","basic","basis","batch","beach","beard","beast","began","begin","being",
+      "below","bench","berry","birth","black","blade","blame","bland","blank","blast",
+      "blaze","bleed","blend","bless","blind","block","blood","bloom","blown","blues",
+      "blunt","blush","board","bonus","boost","booth","bound","boxer","brace","brain",
+      "brand","brave","bread","break","breed","brick","bride","brief","bring","brisk",
+      "broad","broke","brook","broom","brown","brush","buddy","build","built","bunch",
+      "burnt","burst","buyer","cabin","camel","candy","cargo","carry","catch","cause",
+      "cease","chain","chair","chaos","charm","chart","chase","cheap","check","cheek",
+      "cheer","chess","chest","chief","child","china","chips","choir","chunk","civil",
+      "clamp","clash","clasp","class","clean","clear","clerk","click","cliff","climb",
+      "cling","clock","clone","close","cloth","cloud","clown","coach","coast","cobra",
+      "comet","comic","comma","coral","couch","could","count","court","cover","crack",
+      "craft","crane","crash","crazy","cream","creek","crime","crisp","cross","crowd",
+      "crown","cruel","crush","crust","curve","cycle","daily","dance","denim","dense",
+      "depot","depth","derby","devil","digit","dirty","disco","ditch","divvy","dodge",
+      "doing","donor","doubt","dough","draft","drain","drama","drank","drawn","dread",
+      "dream","dress","drift","drink","drive","drone","drove","dryer","dunno","dusty",
+      "dwarf","dying","eagle","early","earth","eight","elite","emery","empty","enemy",
+      "enjoy","enter","entry","equal","error","essay","event","every","exact","exist",
+      "extra","fable","faced","fairy","faith","false","fancy","fatal","feast","fence",
+      "ferry","fetch","fever","fewer","fiber","field","fifth","fifty","fight","final",
+      "first","fixed","flame","flash","fleet","flesh","float","flood","floor","floss",
+      "flour","focus","force","forge","forth","forum","found","frame","frank","fraud",
+      "fresh","front","frost","froze","fruit","funny","ghost","giant","given","glare",
+      "glass","gleam","glide","globe","gloom","gloss","glove","going","grace","grade",
+      "grain","grand","grant","grasp","grass","grave","great","green","greet","grief",
+      "grind","groan","groom","grove","growl","grown","guess","guest","guide","guilt",
+      "guise","gusto","habit","happy","harsh","haven","heart","heavy","hedge","hence",
+      "herbs","honor","hoped","hotel","hotly","house","human","humor","hurry","hyper",
+      "icing","image","imply","inbox","index","inner","input","irony","issue","ivory",
+      "japan","jeans","jewel","joker","joust","judge","juice","juicy","jumbo","jumpy",
+      "karma","kayak","keeps","knack","knife","knock","known","label","lance","large",
+      "laser","later","laugh","layer","learn","lease","least","legal","lemon","level",
+      "light","limit","linen","liner","liver","logic","loose","lover","lucky","lunar",
+      "lying","magic","major","maker","manor","maple","march","marry","match","mayor",
+      "media","mercy","metal","might","model","money","month","moral","moose","mount",
+      "mouse","mouth","moved","movie","multi","music","nasal","nerve","never","newly",
+      "night","ninja","noble","noise","north","noted","novel","nurse","nymph","occur",
+      "ocean","offer","often","olive","onion","onset","opera","orbit","order","other",
+      "outer","owned","owner","oxide","ozone","paint","panel","panic","paper","party",
+      "pasta","patch","pause","peace","pedal","penny","perch","phase","phone","piano",
+      "piece","pilot","pinch","pixel","pizza","place","plain","plane","plant","plate",
+      "plaza","plead","pluck","plumb","plume","plump","plunge","plunk","point","polar",
+      "poppy","posed","power","press","price","pride","prime","print","prior","prize",
+      "probe","prone","proof","prose","proud","prove","prowl","proxy","pulse","punch",
+      "pupil","purse","queen","query","quest","queue","quick","quiet","quota","quote",
+      "rabbi","radar","radio","raise","rally","ranch","range","rapid","ratio","reach",
+      "react","realm","rebel","refer","reign","relay","remix","repay","reset","rider",
+      "ridge","rifle","right","rigid","risky","rival","river","robin","rocky","rouge",
+      "rough","round","route","royal","rugby","ruled","ruler","rural","sadly","saint",
+      "sandy","sauce","scale","scare","scene","scope","score","scout","screw","sedan",
+      "sense","serum","setup","seven","shake","shall","shame","shape","share","shark",
+      "sharp","sheep","sheet","shelf","shell","shine","shirt","shock","shore","short",
+      "shout","shove","shown","siren","sixth","sixty","sized","skill","skull","slate",
+      "slave","sleep","slice","slide","slope","small","smart","smell","smile","smoke",
+      "snake","solar","solid","solve","sorry","south","space","spare","spark","speak",
+      "spear","speed","spell","spend","spice","spill","spine","spite","split","spoke",
+      "spoon","sport","spray","stack","staff","stage","stain","stair","stake","stale",
+      "stand","stark","start","state","stays","steam","steel","steep","steer","stern",
+      "stick","stiff","still","stock","stone","stood","store","storm","story","stove",
+      "strap","straw","stray","strip","strum","stuck","study","stuff","style","sugar",
+      "suite","sunny","super","surge","swamp","swear","sweep","sweet","swept","swing",
+      "sword","sworn","syrup","table","taken","taste","teach","teeth","tempo","tense",
+      "tenth","terms","thorn","those","three","threw","throw","tiger","tight","timer",
+      "tired","title","today","token","topic","total","touch","tough","towel","tower",
+      "trace","track","trade","trail","train","trait","tramp","tread","treat","trend",
+      "trial","tribe","trick","tried","troop","truck","truly","trump","trunk","trust",
+      "truth","tumor","tutor","twice","twist","tying","ultra","uncle","under","unify",
+      "union","unite","unity","until","upper","upset","urban","usage","usual","utter",
+      "valid","value","valve","vapor","vault","video","vigor","viral","virus","visit",
+      "vista","vital","vivid","vodka","voice","voter","vowed","wager","waste","watch",
+      "water","weary","weave","weigh","weird","whale","wheat","wheel","where","which",
+      "while","white","whole","whose","wider","witch","woman","women","world","worry",
+      "worse","worst","worth","would","wound","write","wrong","wrote","yacht","yearn",
+      "yield","young","yours","youth","zebra","zonal"
+    ];
+
+    const WORDLE_MAX_GUESSES = 6;
+    const WORDLE_WORD_LEN = 5;
+
+    let wordleOpen = false;
+    let wordleAnswer = "";
+    let wordleGuesses = [];   // array of strings
+    let wordleCurrentRow = 0;
+    let wordleDone = false;
+    let wordleWon = false;
+    let wordleShareGrid = [];  // emoji rows for sharing
+
+    function pickWord() {
+      return WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)].toUpperCase();
+    }
+
+    function openWordle() {
+      toggleGamesMenu(false);
+      wordleAnswer    = pickWord();
+      wordleGuesses   = [];
+      wordleCurrentRow = 0;
+      wordleDone      = false;
+      wordleWon       = false;
+      wordleShareGrid = [];
+      wordleOpen      = true;
+
+      buildWordleGrid();
+      buildWordleKeyboard();
+      setWordleStatus("");
+      document.getElementById("wordle-modal").classList.remove("hidden");
+    }
+
+    function closeWordle() {
+      wordleOpen = false;
+      document.getElementById("wordle-modal").classList.add("hidden");
+    }
+
+    function buildWordleGrid() {
+      const grid = document.getElementById("wordle-grid");
+      grid.innerHTML = "";
+      for (let r = 0; r < WORDLE_MAX_GUESSES; r++) {
+        const row = document.createElement("div");
+        row.className = "wordle-row";
+        row.id = "wrow-" + r;
+        for (let c = 0; c < WORDLE_WORD_LEN; c++) {
+          const cell = document.createElement("div");
+          cell.className = "wordle-cell";
+          cell.id = `wcell-${r}-${c}`;
+          row.appendChild(cell);
+        }
+        grid.appendChild(row);
+      }
+    }
+
+    const KB_ROWS = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L"],
+      ["Enter","Z","X","C","V","B","N","M","⌫"]
+    ];
+
+    function buildWordleKeyboard() {
+      const kb = document.getElementById("wordle-keyboard");
+      kb.innerHTML = "";
+      KB_ROWS.forEach(row => {
+        const div = document.createElement("div");
+        div.className = "kb-row";
+        row.forEach(key => {
+          const btn = document.createElement("button");
+          btn.className = "kb-key" + (key.length > 1 ? " wide" : "");
+          btn.textContent = key;
+          btn.id = "kbkey-" + key;
+          btn.onclick = () => handleKey(key);
+          div.appendChild(btn);
+        });
+        kb.appendChild(div);
+      });
+    }
+
+    let currentInput = "";
+
+    function handleKey(key) {
+      if (wordleDone) return;
+      if (key === "⌫" || key === "Backspace") {
+        currentInput = currentInput.slice(0, -1);
+      } else if (key === "Enter") {
+        submitGuess();
+        return;
+      } else if (/^[A-Z]$/.test(key) && currentInput.length < WORDLE_WORD_LEN) {
+        currentInput += key;
+      }
+      updateCurrentRowDisplay();
+    }
+
+    function updateCurrentRowDisplay() {
+      for (let c = 0; c < WORDLE_WORD_LEN; c++) {
+        const cell = document.getElementById(`wcell-${wordleCurrentRow}-${c}`);
+        if (!cell) return;
+        cell.textContent = currentInput[c] || "";
+        cell.className = "wordle-cell" + (currentInput[c] ? " filled" : "");
+      }
+    }
+
+    function submitGuess() {
+      if (currentInput.length !== WORDLE_WORD_LEN) {
+        setWordleStatus("Not enough letters");
+        return;
+      }
+      if (!WORD_LIST.includes(currentInput.toLowerCase())) {
+        setWordleStatus("Not in word list");
+        return;
+      }
+      setWordleStatus("");
+
+      const guess = currentInput;
+      wordleGuesses.push(guess);
+      const result = scoreGuess(guess, wordleAnswer);
+      const emojiRow = result.map(r => r === "correct" ? "🟩" : r === "present" ? "🟨" : "⬛").join("");
+      wordleShareGrid.push(emojiRow);
+
+      // Animate cells
+      result.forEach((state, c) => {
+        const cell = document.getElementById(`wcell-${wordleCurrentRow}-${c}`);
+        cell.textContent = guess[c];
+        setTimeout(() => { cell.className = "wordle-cell " + state; }, c * 80);
+      });
+
+      // Update keyboard colors
+      result.forEach((state, c) => {
+        updateKeyColor("kbkey-" + guess[c], state);
+      });
+
+      currentInput = "";
+      wordleCurrentRow++;
+
+      if (guess === wordleAnswer) {
+        wordleWon = true;
+        wordleDone = true;
+        const msgs = ["Genius!","Magnificent!","Impressive!","Splendid!","Great!","Phew!"];
+        setTimeout(() => setWordleStatus(msgs[wordleCurrentRow - 1] || "Nice!"), 500);
+        return;
+      }
+      if (wordleCurrentRow >= WORDLE_MAX_GUESSES) {
+        wordleDone = true;
+        setTimeout(() => setWordleStatus("The word was: " + wordleAnswer), 500);
+      }
+    }
+
+    function scoreGuess(guess, answer) {
+      const result = Array(WORDLE_WORD_LEN).fill("absent");
+      const answerArr = answer.split("");
+      const guessArr  = guess.split("");
+      const used = Array(WORDLE_WORD_LEN).fill(false);
+
+      // First pass: correct positions
+      guessArr.forEach((ch, i) => {
+        if (ch === answerArr[i]) {
+          result[i] = "correct";
+          used[i] = true;
+          answerArr[i] = null;
+        }
+      });
+      // Second pass: present but wrong position
+      guessArr.forEach((ch, i) => {
+        if (result[i] === "correct") return;
+        const j = answerArr.indexOf(ch);
+        if (j !== -1 && !used[j]) {
+          result[i] = "present";
+          answerArr[j] = null;
+          used[j] = true;
+        }
+      });
+      return result;
+    }
+
+    const keyColorPriority = { correct: 3, present: 2, absent: 1 };
+
+    function updateKeyColor(id, state) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const cur = el.dataset.state || "";
+      if ((keyColorPriority[state] || 0) > (keyColorPriority[cur] || 0)) {
+        el.classList.remove("correct","present","absent");
+        el.classList.add(state);
+        el.dataset.state = state;
+      }
+    }
+
+    function setWordleStatus(msg) {
+      document.getElementById("wordle-status").textContent = msg;
+    }
+
+    function shareWordleResult() {
+      if (wordleShareGrid.length === 0) {
+        setWordleStatus("Make at least one guess first!");
+        return;
+      }
+      const guessCount = wordleWon ? wordleCurrentRow : "X";
+      const header = `🟩 Wordle ${guessCount}/${WORDLE_MAX_GUESSES} — ${username}`;
+      const grid   = wordleShareGrid.join("\n");
+      const full   = `${header}\n${grid}`;
+
+      if (CONFIGURED) {
+        messagesRef.push({ type: "system", text: full, t: Date.now() });
+      } else {
+        appendSystem(full);
+      }
+      closeWordle();
+    }
+
+    // Physical keyboard support in wordle
+    document.addEventListener("keydown", e => {
+      if (!wordleOpen) {
+        if (e.key === "Enter") {
+          if (document.getElementById("chat-screen").style.display === "flex") {
+            sendMessage();
+          } else {
+            joinRoom();
+          }
+        }
+        return;
+      }
+      if (e.key === "Enter") { handleKey("Enter"); return; }
+      if (e.key === "Backspace") { handleKey("Backspace"); return; }
+      if (/^[a-zA-Z]$/.test(e.key)) { handleKey(e.key.toUpperCase()); }
     });
   </script>
 </body>
