@@ -153,6 +153,48 @@
       border-radius: 20px;
     }
 
+    /* ── Emoji picker ── */
+    #emoji-picker {
+      position: absolute;
+      bottom: 70px;
+      left: 12px;
+      background: #0f3460;
+      border: 1px solid #1a4a7a;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      width: min(320px, 90vw);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    #emoji-picker span {
+      font-size: 1.4rem;
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px 4px;
+      transition: background 0.15s;
+      user-select: none;
+    }
+
+    #emoji-picker span:hover { background: rgba(255,255,255,0.1); }
+
+    #emoji-btn {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 0 4px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    #chat-screen { position: relative; }
+
     /* ── Input bar ── */
     #input-bar {
       display: flex;
@@ -263,7 +305,9 @@
       <button id="leave-btn" onclick="leaveRoom()">Leave</button>
     </header>
     <div id="messages"></div>
+    <div id="emoji-picker" style="display:none"></div>
     <div id="input-bar">
+      <button id="emoji-btn" onclick="togglePicker()">😊</button>
       <input id="msg-input" type="text" placeholder="Type a message…" maxlength="500" autocomplete="off" />
       <button id="send-btn" onclick="sendMessage()">
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
@@ -406,6 +450,46 @@
       box.appendChild(div);
       scrollBottom();
     }
+
+    // ── Emoji picker ──────────────────────────────
+    const EMOJIS = [
+      "😀","😂","😍","🥰","😎","🤩","😢","😭","😡","🤯","🥳","😴","🤔","🤗","😏",
+      "👍","👎","👏","🙌","🤝","🙏","💪","✌️","🤞","👋","❤️","🧡","💛","💚","💙",
+      "💜","🖤","💔","💥","✨","🔥","⭐","🎉","🎊","🎁","🏆","🥇","🎮","🎵","🎶",
+      "😺","🐶","🐱","🦊","🐻","🐼","🐨","🦁","🐸","🐙","🍕","🍔","🍟","🌮","🍣",
+      "🍦","🍩","☕","🍺","🥂","🚀","🌈","⚡","❄️","🌊","🌸","🌺","🌻","🍀","👀"
+    ];
+
+    function buildPicker() {
+      const picker = document.getElementById("emoji-picker");
+      EMOJIS.forEach(e => {
+        const span = document.createElement("span");
+        span.textContent = e;
+        span.onclick = () => {
+          const input = document.getElementById("msg-input");
+          const pos = input.selectionStart;
+          input.value = input.value.slice(0, pos) + e + input.value.slice(pos);
+          input.focus();
+          input.selectionStart = input.selectionEnd = pos + e.length;
+          togglePicker(false);
+        };
+        picker.appendChild(span);
+      });
+    }
+
+    function togglePicker(force) {
+      const picker = document.getElementById("emoji-picker");
+      const show = force !== undefined ? force : picker.style.display === "none";
+      picker.style.display = show ? "flex" : "none";
+    }
+
+    document.addEventListener("click", e => {
+      if (!e.target.closest("#emoji-picker") && e.target.id !== "emoji-btn") {
+        togglePicker(false);
+      }
+    });
+
+    buildPicker();
 
     // ── Enter key ─────────────────────────────────
     document.addEventListener("keydown", e => {
