@@ -258,6 +258,55 @@
       display: none;
     }
 
+    /* ── Charlie Kirk background ── */
+    body {
+      background-image: url("Charlie_Kirk_(54507064098)_(cropped).jpg");
+      background-repeat: repeat;
+      background-size: 180px auto;
+    }
+
+    /* ── YouTube popup ── */
+    #yt-popup {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 300px;
+      background: #0f3460;
+      border: 1px solid #1a4a7a;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+    }
+    #yt-popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #0a2a50;
+      font-size: 0.78rem;
+      color: #aaa;
+    }
+    #yt-popup-header span { font-weight: 600; color: #e94560; }
+    #yt-close {
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0 2px;
+    }
+    #yt-close:hover { color: #e94560; }
+    #yt-popup iframe {
+      width: 100%;
+      height: 168px;
+      border: none;
+      display: block;
+    }
+
     /* ── Modal overlay ── */
     .modal-overlay {
       position: fixed;
@@ -420,6 +469,19 @@
         <button class="btn-danger" onclick="shareWordleResult()">Share to chat</button>
       </div>
     </div>
+  </div>
+
+  <!-- YouTube popup -->
+  <div id="yt-popup">
+    <div id="yt-popup-header">
+      <span>📺 Now Playing</span>
+      <button id="yt-close" onclick="document.getElementById('yt-popup').style.display='none'" title="Close">✕</button>
+    </div>
+    <iframe
+      src="https://www.youtube.com/embed/KNCFeGJQsjs?autoplay=1&mute=0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
   </div>
 
   <!-- Firebase SDK (v9 compat) -->
