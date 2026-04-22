@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Room</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Login screen ── */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 320px;
+    }
+
+    #login-screen h1 {
+      font-size: 2rem;
+      color: #e94560;
+      letter-spacing: 1px;
+    }
+
+    #login-screen p {
+      color: #aaa;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* ── Chat screen ── */
+    #chat-screen {
+      display: none;
+      flex-direction: column;
+      width: min(480px, 100vw);
+      height: 100dvh;
+      background: #16213e;
+    }
+
+    header {
+      background: #0f3460;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+    }
+
+    header h2 {
+      font-size: 1.1rem;
+      color: #e94560;
+    }
+
+    #online-count {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    #leave-btn {
+      background: none;
+      border: 1px solid #e94560;
+      color: #e94560;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    #leave-btn:hover {
+      background: #e94560;
+      color: #fff;
+    }
+
+    /* ── Messages ── */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    #messages::-webkit-scrollbar { width: 4px; }
+    #messages::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 4px; }
+
+    .msg {
+      max-width: 78%;
+      padding: 8px 12px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      word-break: break-word;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg.other {
+      background: #0f3460;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+    }
+
+    .msg.mine {
+      background: #e94560;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+
+    .msg .sender {
+      font-size: 0.72rem;
+      font-weight: 600;
+      opacity: 0.75;
+      margin-bottom: 3px;
+    }
+
+    .msg.mine .sender { display: none; }
+
+    .msg .time {
+      font-size: 0.65rem;
+      opacity: 0.55;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .system-msg {
+      align-self: center;
+      font-size: 0.75rem;
+      color: #888;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── Input bar ── */
+    #input-bar {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: #0f3460;
+      flex-shrink: 0;
+    }
+
+    #msg-input {
+      flex: 1;
+      background: #16213e;
+      border: 1px solid #1a4a7a;
+      border-radius: 22px;
+      padding: 10px 16px;
+      color: #eee;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    #msg-input:focus { border-color: #e94560; }
+
+    #send-btn {
+      background: #e94560;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    #send-btn:hover { background: #c73652; }
+
+    #send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    /* ── Shared input style ── */
+    input[type="text"] {
+      width: 100%;
+      background: #0f3460;
+      border: 1px solid #1a4a7a;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #eee;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus { border-color: #e94560; }
+
+    button.primary {
+      width: 100%;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 11px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    button.primary:hover { background: #c73652; }
+
+    #error-msg {
+      color: #e94560;
+      font-size: 0.82rem;
+      min-height: 18px;
+    }
+
+    /* ── Config notice ── */
+    #config-notice {
+      background: #e94560;
+      color: #fff;
+      font-size: 0.82rem;
+      padding: 8px 16px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login -->
+  <div id="login-screen">
+    <h1>💬 Chat Room</h1>
+    <p>Enter your name to join the room</p>
+    <input id="username-input" type="text" placeholder="Your name" maxlength="20" autocomplete="off" />
+    <span id="error-msg"></span>
+    <button class="primary" onclick="joinRoom()">Join Room</button>
+  </div>
+
+  <!-- Chat -->
+  <div id="chat-screen">
+    <div id="config-notice">⚠️ Firebase not configured — see README for setup instructions.</div>
+    <header>
+      <h2>💬 Chat Room</h2>
+      <span id="online-count"></span>
+      <button id="leave-btn" onclick="leaveRoom()">Leave</button>
+    </header>
+    <div id="messages"></div>
+    <div id="input-bar">
+      <input id="msg-input" type="text" placeholder="Type a message…" maxlength="500" autocomplete="off" />
+      <button id="send-btn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    // ─────────────────────────────────────────────
+    // 🔧 PASTE YOUR FIREBASE CONFIG HERE
+    // ─────────────────────────────────────────────
+    const firebaseConfig = {
+      apiKey: "AIzaSyCvjKNhlzu2LMsJvOuDtjvJZBJFmZAiteM",
+      authDomain: "horses-together.firebaseapp.com",
+      databaseURL: "https://horses-together-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "horses-together",
+      storageBucket: "horses-together.firebasestorage.app",
+      messagingSenderId: "101490130126",
+      appId: "1:101490130126:web:2ce174ed026fc48bbae49f"
+    };
+    // ─────────────────────────────────────────────
+
+    const CONFIGURED = !firebaseConfig.apiKey.includes("YOUR_");
+
+    let app, db, messagesRef, presenceRef;
+    let username = "";
+    let myPresenceRef = null;
+
+    if (CONFIGURED) {
+      app = firebase.initializeApp(firebaseConfig);
+      db  = firebase.database();
+      messagesRef = db.ref("messages");
+      presenceRef = db.ref("presence");
+    }
+
+    // ── Helpers ───────────────────────────────────
+    function ts() {
+      return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function sanitize(str) {
+      const d = document.createElement("div");
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function scrollBottom() {
+      const m = document.getElementById("messages");
+      m.scrollTop = m.scrollHeight;
+    }
+
+    // ── Login ─────────────────────────────────────
+    function joinRoom() {
+      const val = document.getElementById("username-input").value.trim();
+      const err = document.getElementById("error-msg");
+
+      if (!val) { err.textContent = "Please enter a name."; return; }
+      if (val.length < 2) { err.textContent = "Name must be at least 2 characters."; return; }
+
+      username = val;
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("chat-screen").style.display = "flex";
+
+      if (!CONFIGURED) {
+        document.getElementById("config-notice").style.display = "block";
+        appendSystem("⚠️ Firebase not configured. Messages won't be saved.");
+        return;
+      }
+
+      // Presence
+      myPresenceRef = presenceRef.child(username.replace(/[.#$[\]]/g, "_") + "_" + Date.now());
+      myPresenceRef.set({ name: username, online: true });
+      myPresenceRef.onDisconnect().remove();
+
+      presenceRef.on("value", snap => {
+        const count = snap.numChildren();
+        document.getElementById("online-count").textContent = count + " online";
+      });
+
+      // System join message
+      messagesRef.push({ type: "system", text: `${username} joined`, t: Date.now() });
+
+      // Listen for messages (last 100)
+      messagesRef.limitToLast(100).on("child_added", snap => {
+        const d = snap.val();
+        if (d.type === "system") {
+          appendSystem(sanitize(d.text));
+        } else {
+          appendMessage(d.sender, d.text, d.sender === username, d.time);
+        }
+      });
+    }
+
+    function leaveRoom() {
+      if (CONFIGURED) {
+        if (myPresenceRef) myPresenceRef.remove();
+        messagesRef.push({ type: "system", text: `${username} left`, t: Date.now() });
+      }
+      location.reload();
+    }
+
+    // ── Send ──────────────────────────────────────
+    function sendMessage() {
+      const input = document.getElementById("msg-input");
+      const text  = input.value.trim();
+      if (!text) return;
+      input.value = "";
+
+      if (!CONFIGURED) {
+        appendMessage(username, sanitize(text), true, ts());
+        return;
+      }
+
+      messagesRef.push({ sender: username, text: sanitize(text), time: ts(), t: Date.now() });
+    }
+
+    // ── Render ────────────────────────────────────
+    function appendMessage(sender, text, isMine, time) {
+      const box = document.getElementById("messages");
+      const div = document.createElement("div");
+      div.className = "msg " + (isMine ? "mine" : "other");
+      div.innerHTML = `
+        <div class="sender">${sanitize(sender)}</div>
+        <div class="text">${text}</div>
+        <div class="time">${time || ""}</div>
+      `;
+      box.appendChild(div);
+      scrollBottom();
+    }
+
+    function appendSystem(text) {
+      const box = document.getElementById("messages");
+      const div = document.createElement("div");
+      div.className = "system-msg";
+      div.textContent = text;
+      box.appendChild(div);
+      scrollBottom();
+    }
+
+    // ── Enter key ─────────────────────────────────
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        if (document.getElementById("chat-screen").style.display === "flex") {
+          sendMessage();
+        } else {
+          joinRoom();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
